@@ -1,0 +1,66 @@
+USE db_btFood;
+
+create table food_type (
+  type_id int primary key auto_increment,
+  type_name varchar(50)
+);
+
+create table food (
+  food_id int primary key auto_increment,
+  food_name VARCHAR(50),
+  images VARCHAR(50),
+  price float,
+  desc_food VARCHAR(50),
+  type_id INT,
+  foreign key (type_id) references food_type(type_id) #tên table va PK
+);
+
+create table users (
+  user_id INT primary key auto_increment,
+  full_name VARCHAR(50),
+  email VARCHAR(50),
+  pass varchar(50)
+);
+
+create table orders (
+user_id int,
+food_id int,
+amount int,
+code_order varchar(50),
+arr_sub_id varchar(225),
+#primary key(user_id,food_id),
+foreign key(user_id) references users(user_id),
+foreign key(food_id) references food(food_id)
+);
+
+create table sub_food (
+sub_id int primary key auto_increment,
+sub_name varchar(50),
+sub_price float,
+food_id int,
+foreign key(food_id) references food(food_id)
+);
+
+create table restaurant (
+ res_id int primary key auto_increment,
+ res_name varchar(50),
+ image varchar(50),
+ desc_res varchar(225)
+);
+
+create table rate_res (
+user_id int,
+res_id int,
+amount int,
+date_rate datetime,
+foreign key (user_id) references users(user_id),
+foreign key (res_id) references restaurant(res_id)
+);
+
+create table like_res (
+ user_id int,
+ res_id int,
+ date_like datetime,
+ foreign key (user_id) references users(user_id),
+ foreign key (res_id) references restaurant(res_id)
+);
