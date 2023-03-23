@@ -28,7 +28,7 @@ food_id int,
 amount int,
 code_order varchar(50),
 arr_sub_id varchar(225),
-#primary key(user_id,food_id),
+primary key(user_id,food_id),
 foreign key(user_id) references users(user_id),
 foreign key(food_id) references food(food_id)
 );
@@ -53,6 +53,7 @@ user_id int,
 res_id int,
 amount int,
 date_rate datetime,
+PRIMARY KEY (user_id,res_id),
 foreign key (user_id) references users(user_id),
 foreign key (res_id) references restaurant(res_id)
 );
@@ -61,6 +62,8 @@ create table like_res (
  user_id int,
  res_id int,
  date_like datetime,
+ PRIMARY KEY (user_id,res_id),
  foreign key (user_id) references users(user_id),
  foreign key (res_id) references restaurant(res_id)
 );
+
