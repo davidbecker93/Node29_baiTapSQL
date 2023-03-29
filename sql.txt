@@ -123,7 +123,33 @@ from restaurant join like_res on restaurant.res_id = like_res.res_id
 group by Ten_Nha_Hang order by Luot_Like_NH desc limit 2;
 
 -- 5  người đặt hàng nhiều nhất
-SELECT users.user_id AS MKH,users.full_name AS ho_ten,SUM(orders.amount) AS so_don_hang
+SELECT users.user_id AS ma_khach_hang,users.full_name AS ho_ten,SUM(orders.amount) AS so_don_hang
 FROM users JOIN orders
 ON users.user_id = orders.user_id
-GROUP BY MKH ORDER BY so_don_hang DESC LIMIT 5;
+GROUP BY ma_khach_hang ORDER BY so_don_hang DESC LIMIT 5;
+
+-- Tìm người dùng không hoạt động
+SELECT users.user_id AS ma_khach_hang,
+ users.full_name as ho_va_ten,
+ COUNT(like_res.user_id) as luot_like,
+ COUNT(rate_res.user_id) as luot_rate,
+ COUNT(orders.user_id) as luot_order
+FROM users
+LEFT JOIN rate_res
+ON users.user_id = rate_res.user_id
+LEFT JOIN like_res
+ON users.user_id = like_res.user_id
+LEFT JOIN orders
+ON users.user_id = orders.user_id
+WHERE rate_res.user_id IS NULL && like_res.user_id IS NULL && orders.user_id is NULL
+GROUP BY users.user_id;
+
+-- Tính trung bình sub_foot của 1 food
+SELECT food_type.type_id AS ma_food, food_type.type_name AS ten_mon, AVG(sub_price) AS trung_binh_gia_sub_food
+FROM food_type
+LEFT JOIN food
+ON food.type_id = food_type.type_id
+LEFT JOIN sub_food
+ON food.food_id = sub_food.food_id
+GROUP BY food_type.type_id
+ORDER BY trung_binh_gia_sub_food DESC;
